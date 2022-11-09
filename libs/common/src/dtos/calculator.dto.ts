@@ -7,9 +7,19 @@ export class CalculatorDto {
   @IsNumber()
   right: number;
 
-  @IsIn(['-', '+', '%', '/'])
+  @IsIn(['-', '+', '%', '/', '*'])
   operator: string;
 
   @IsEmail()
   email?: string;
+}
+export class CalculatorDtoReq {
+  @IsNumber()
+  left: number;
+
+  @IsNumber()
+  right: number;
+
+  @IsIn(['-', '+', '%', '/', '*'])
+  operator: string;
 }

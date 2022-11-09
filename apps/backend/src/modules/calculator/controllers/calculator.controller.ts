@@ -1,4 +1,4 @@
-import { CalculatorDto } from '@app/common';
+import { CalculatorDtoReq } from '@app/common';
 import {
   Body,
   Controller,
@@ -20,7 +20,7 @@ export class CalculatorController {
   }
 
   @Post('api/calculations')
-  calculator(@Body() payload: CalculatorDto, @Req() req: any) {
+  calculator(@Body() payload: CalculatorDtoReq, @Req() req: any) {
     return this.service.calculate({ ...payload, email: req.user.email });
   }
 

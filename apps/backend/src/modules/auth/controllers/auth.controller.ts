@@ -7,7 +7,6 @@ export class AuthController {
 
   @Get('api/me')
   calculator(@Req() req: any) {
-    console.log(req.user);
-    return this.service.me();
+    return req.user;
   }
 }

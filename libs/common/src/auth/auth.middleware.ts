@@ -1,10 +1,6 @@
-import {
-  Injectable,
-  NestMiddleware,
-  UnauthorizedException,
-} from '@nestjs/common';
-import * as firebase from 'firebase-admin';
+import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
+import * as firebase from 'firebase-admin';
 import { FirebaseService } from './auth.service';
 
 @Injectable()
@@ -29,10 +25,14 @@ export class AuthMiddleware implements NestMiddleware {
           next();
         })
         .catch(() => {
-          throw new UnauthorizedException();
+          return res
+            .status(HttpStatus.UNAUTHORIZED)
+            .send({ error: 'Unauthorized' });
         });
     } else {
-      throw new UnauthorizedException();
+      return res
+        .status(HttpStatus.UNAUTHORIZED)
+        .send({ error: 'Unauthorized' });
     }
   }
 }

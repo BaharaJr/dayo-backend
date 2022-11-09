@@ -1,4 +1,4 @@
-import { IsEmail, IsIn, IsNumber } from 'class-validator';
+import { IsEmail, IsIn, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CalculatorDto {
   @IsNumber()
@@ -22,4 +22,18 @@ export class CalculatorDtoReq {
 
   @IsIn(['-', '+', '%', '/', '*'])
   operator: string;
+}
+
+export class HistoryRequestDto {
+  @IsNumber()
+  @IsNotEmpty()
+  page: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  pageSize: number;
+
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 }

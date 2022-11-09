@@ -50,7 +50,10 @@ export class CalculatorController {
     @Res() res: any,
     @Query() query: HistoryRequest,
   ): Promise<CalculatorInterface[] | CalculatorErrorResponse> {
-    const history = await this.service.history(query);
+    const history = await this.service.history({
+      ...query,
+      email: req.user.email,
+    });
     return res.status(history.status || HttpStatus.OK).send(history);
   }
 

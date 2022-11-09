@@ -20,11 +20,11 @@ export class AppController {
 
   @Get()
   getApp(@Res() res: any) {
-    return res.redirect('dayo/home');
+    return res.redirect('/dayo/home');
   }
   @Get('dayo')
   home(@Res() res: any) {
-    return res.redirect(`dayo/home`);
+    return res.redirect(`/dayo/home`);
   }
   @Get('dayo/:app')
   getRoute(@Res() res: any, @Param('app') app: string) {

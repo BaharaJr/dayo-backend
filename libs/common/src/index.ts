@@ -4,4 +4,6 @@ export * from './interceptors/errors.interceptor';
 export * from './interceptors/logging.interceptor';
 export * from './system/system.configuration';
 export * from './rmq/rmq.service';
+export * from './rmq/rmq.module';
 export * from './dtos/calculator.dto';
+export * from './constants/app.constants';

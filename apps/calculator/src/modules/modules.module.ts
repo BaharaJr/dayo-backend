@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import { RmqModule } from '../../../../libs/common/src/rmq/rmq.module';
+import { RmqModule } from '@app/common';
 import { CalculatorController } from './controllers/calculator.controller';
 import { Calculator } from './entities/calculator.entity';
 import { CalculatorService } from './services/calculator.service';

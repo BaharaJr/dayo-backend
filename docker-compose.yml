@@ -25,8 +25,6 @@ services:
       - ./apps/backend/.env
     volumes:
       - .:/home/app
-    ports:
-      - '2003:1000'
 
   calculator:
     build:
@@ -39,8 +37,6 @@ services:
       - ./apps/backend/.env
     volumes:
       - .:/home/app
-    ports:
-      - '2005:1000'
 
   rabbitmq:
     image: rabbitmq

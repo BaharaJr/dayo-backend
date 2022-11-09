@@ -10,6 +10,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  Logger.debug(`Calculator listening on port: ${port}`, 'API');
+  Logger.debug(`Auth listening on port: ${port}`, 'API');
 }
 bootstrap();

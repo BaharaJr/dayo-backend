@@ -28,8 +28,11 @@ export class CalculatorController {
   }
 
   @EventPattern('delete')
-  async delete(@Payload() data: { id: string }, @Ctx() context: RmqContext) {
-    const result = await this.calculatorService.delete(data.id);
+  async delete(
+    @Payload() data: { id: string; email: string },
+    @Ctx() context: RmqContext,
+  ) {
+    const result = await this.calculatorService.delete(data.id, data.email);
     this.rmqService.ack(context);
     return result;
   }

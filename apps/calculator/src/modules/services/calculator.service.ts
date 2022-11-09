@@ -1,7 +1,7 @@
+import { CalculatorDto } from '@app/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CalculatorDto } from '@app/common';
 import { Calculator } from '../entities/calculator.entity';
 
 @Injectable()
@@ -30,12 +30,21 @@ export class CalculatorService {
     }
   };
 
-  delete = async (id: string): Promise<{ message: string }> => {
+  delete = async (id: string, email: string): Promise<{ message: string }> => {
     try {
+      await this.validate(id, email);
       await this.repository.delete(id);
       return { message: 'History deleted successfully' };
     } catch (e) {
       throw new BadRequestException(e.message);
     }
+  };
+
+  validate = async (id: string, email: string): Promise<void> => {
+    const calculation = await this.repository.findOne({ where: { id, email } });
+    if (!calculation)
+      throw new BadRequestException('You do not have access to this resource');
+
+    return;
   };
 }

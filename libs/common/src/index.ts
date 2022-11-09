@@ -7,3 +7,5 @@ export * from './rmq/rmq.service';
 export * from './rmq/rmq.module';
 export * from './dtos/calculator.dto';
 export * from './constants/app.constants';
+export * from './auth/auth.middleware';
+export * from './auth/auth.middleware.module';

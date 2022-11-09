@@ -25,4 +25,4 @@ WORKDIR /home/app
 
 
 COPY --from=development /home/app/dist/apps/calculator/main.js ./
-COPY --from=development /home/app/node_modules ./
+COPY --from=development /home/app/node_modules ./node_modules

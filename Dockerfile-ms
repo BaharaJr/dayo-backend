@@ -23,4 +23,4 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /home/app
 
 COPY --from=development /home/app/dist/apps/backend/main.js ./
-COPY --from=development /home/app/node_modules ./
+COPY --from=development /home/app/node_modules ./node_modules

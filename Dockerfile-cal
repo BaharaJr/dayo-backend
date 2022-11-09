@@ -22,4 +22,4 @@ RUN npm install --only=production
 
 COPY . .
 
-COPY --from=development /home/app/dist/backend/main.js ./
+COPY --from=development /home/app/dist/apps/backend/main.js ./

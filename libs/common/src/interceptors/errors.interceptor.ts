@@ -6,6 +6,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { existsSync } from 'fs';
+import { URLS } from '../constants/app.constants';
 
 @Catch()
 export class HttpErrorFilter implements ExceptionFilter {
@@ -30,11 +31,15 @@ export class HttpErrorFilter implements ExceptionFilter {
     message = this.sanitizeMessage(message);
     if (
       message.includes('Oops') &&
-      existsSync(`${global.FRONTEND}/${request?.url}`)
+      (existsSync(`${global.FRONTEND}/${request?.url}`) ||
+        URLS.includes(request.url))
     ) {
-      return response.sendFile(request.url, {
-        root: global.FRONTEND,
-      });
+      return response.sendFile(
+        URLS.includes(request.url) ? 'index.html' : request.url,
+        {
+          root: global.FRONTEND,
+        },
+      );
     }
     Logger.error(message, `${request?.method} ${request?.url}`, 'Exception');
     if (response) {

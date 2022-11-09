@@ -3,14 +3,13 @@ import {
   Controller,
   Get,
   HttpStatus,
-  Param,
   Post,
   Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { existsSync, unlinkSync } from 'fs';
+import { unlinkSync } from 'fs';
 import { diskStorage } from 'multer';
 import { AppService } from './app.service';
 
@@ -20,29 +19,9 @@ export class AppController {
 
   @Get()
   getApp(@Res() res: any) {
-    return res.redirect('/dayo/home');
-  }
-  @Get('dayo')
-  home(@Res() res: any) {
-    return res.redirect(`/dayo/home`);
-  }
-  @Get('dayo/:app')
-  getRoute(@Res() res: any, @Param('app') app: string) {
-    if (`${global.FRONTEND}/${app === 'home' ? 'index.html' : app}`) {
-      return res.sendFile(app === 'home' ? 'index.html' : app, {
-        root: global.FRONTEND,
-      });
-    }
-    return res.status(HttpStatus.NOT_FOUND).send({ error: 'Route not found.' });
-  }
-  @Get('dayo/:app/*')
-  loadApp(@Res() res: any, @Param() params: any) {
-    if (existsSync(`${global.FRONTEND}/${params['0']}`)) {
-      return res.sendFile(params['0'], {
-        root: global.FRONTEND,
-      });
-    }
-    return res.status(HttpStatus.NOT_FOUND).send({ error: 'Route not found.' });
+    return res.sendFile('index.html', {
+      root: global.FRONTEND,
+    });
   }
 
   @Post('api/apps')

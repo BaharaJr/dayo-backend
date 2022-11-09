@@ -22,4 +22,4 @@ RUN npm install --only=production
 
 COPY . .
 
-COPY --from=development /home/app/dist/calculator/main.js ./
+COPY --from=development /home/app/dist/apps/calculator/main.js ./

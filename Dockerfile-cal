@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN npm run build calculator
+
 
 FROM node:alpine as production
 
@@ -16,10 +18,6 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /home/app
 
-COPY package*.json ./
-
 RUN npm install --only=production
 
-COPY . .
-
-COPY --from=development /home/app/dist/apps/backend/main.js ./
+COPY --from=development /home/app/dist/apps/calculator/main.js ./

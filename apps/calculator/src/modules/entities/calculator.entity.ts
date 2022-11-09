@@ -22,7 +22,7 @@ export class Calculator extends BaseEntity {
   operator: string;
 
   @Column()
-  result: number;
+  result: string;
 
   @Column()
   email: string;

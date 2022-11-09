@@ -1,4 +1,8 @@
-import { CalculatorDto } from '@app/common';
+import {
+  CalculatorDto,
+  CalculatorErrorResponse,
+  CalculatorInterface,
+} from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CALCULATOR_SERVICE } from '@app/common';
@@ -10,7 +14,9 @@ export class CalculatorService {
     @Inject(CALCULATOR_SERVICE) private calculatorClient: ClientProxy,
   ) {}
 
-  calculate = async (body: CalculatorDto) => {
+  calculate = async (
+    body: CalculatorDto,
+  ): Promise<CalculatorInterface | CalculatorErrorResponse> => {
     return await lastValueFrom(
       this.calculatorClient.send('calculate', { ...body }),
     );

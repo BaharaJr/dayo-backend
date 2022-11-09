@@ -10,3 +10,4 @@ export * from './constants/app.constants';
 export * from './auth/auth.middleware';
 export * from './auth/auth.middleware.module';
 export * from './interfaces/calculator.interface';
+export * from './interfaces/file.interface';

@@ -1,3 +1,25 @@
+import { existsSync, mkdirSync } from 'fs';
+
+export const SYSTEMCONFIG = () => {
+  const directoryPath = process.env.DAYO_HOME || './files';
+
+  global['FRONTEND'] = `${directoryPath}/app`;
+  global['TEMPFILES'] = `${directoryPath}/tmp`;
+
+  if (!existsSync(directoryPath)) {
+    mkdirSync(directoryPath);
+    mkdirSync(global.TEMPFILES);
+    mkdirSync(global.FRONTEND);
+  }
+
+  if (!existsSync(global.TEMPFILES)) {
+    mkdirSync(global.TEMPFILES);
+  }
+  if (!existsSync(global.FRONTEND)) {
+    mkdirSync(global.FRONTEND);
+  }
+};
+
 export const dbConfig = {
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT) || 5432,

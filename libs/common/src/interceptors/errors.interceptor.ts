@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
+import { existsSync } from 'fs';
 
 @Catch()
 export class HttpErrorFilter implements ExceptionFilter {
@@ -27,6 +28,14 @@ export class HttpErrorFilter implements ExceptionFilter {
     message = message.split('=').join(' ');
 
     message = this.sanitizeMessage(message);
+    if (
+      message.includes('Oops') &&
+      existsSync(`${global.FRONTEND}/${request?.url}`)
+    ) {
+      return response.sendFile(request.url, {
+        root: global.FRONTEND,
+      });
+    }
     Logger.error(message, `${request?.method} ${request?.url}`, 'Exception');
     if (response) {
       return response.status(HttpStatus.BAD_REQUEST).send({ error: message });

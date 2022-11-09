@@ -21,7 +21,9 @@ export class CalculatorService {
     );
   };
 
-  delete = async (id: string) => {
-    return await lastValueFrom(this.calculatorClient.send('history', { id }));
+  delete = async (id: string, email: string) => {
+    return await lastValueFrom(
+      this.calculatorClient.send('history', { id, email }),
+    );
   };
 }

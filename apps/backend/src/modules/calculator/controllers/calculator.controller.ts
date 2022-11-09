@@ -1,3 +1,4 @@
+import { CalculatorDto } from '@app/common';
 import {
   Body,
   Controller,
@@ -5,9 +6,8 @@ import {
   Get,
   Param,
   Post,
-  Query,
+  Req,
 } from '@nestjs/common';
-import { CalculatorDto } from '@app/common';
 import { CalculatorService } from '../services/calculator.service';
 
 @Controller()
@@ -20,17 +20,17 @@ export class CalculatorController {
   }
 
   @Post('api/calculations')
-  calculator(@Body() payload: CalculatorDto) {
-    return this.service.calculate(payload);
+  calculator(@Body() payload: CalculatorDto, @Req() req: any) {
+    return this.service.calculate({ ...payload, email: req.user.email });
   }
 
   @Get('api/calculations')
-  async history(@Query('email') email: string) {
-    return this.service.history(email);
+  async history(@Req() req: any) {
+    return this.service.history(req.user.email);
   }
 
   @Delete('api/calculations/:id')
-  async delte(@Param('id') id: string) {
-    return this.service.delete(id);
+  async delete(@Param('id') id: string, @Req() req: any) {
+    return this.service.delete(id, req.user.email);
   }
 }

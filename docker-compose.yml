@@ -1,0 +1,47 @@
+version: '3.4'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+      target: development
+    command: npm run start:dev backend
+
+    env_file:
+      - ./apps/backend/.env
+    volumes:
+      - .:/home/app
+    ports:
+      - '2004:1000'
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: npm run start:dev auth
+
+    env_file:
+      - ./apps/backend/.env
+    volumes:
+      - .:/home/app
+    ports:
+      - '2003:1000'
+
+  calculator:
+    build:
+      context: .
+      dockerfile: ./apps/calculator/Dockerfile
+      target: development
+    command: npm run start:dev calculator
+
+    env_file:
+      - ./apps/backend/.env
+    volumes:
+      - .:/home/app
+    ports:
+      - '2005:1000'
+
+networks:
+  default:
+      name: local-docker-network

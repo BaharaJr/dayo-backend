@@ -3,11 +3,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ schema: 'public' })
+@Index('unique_calculation', ['email', 'operator', 'left', 'right'], {
+  unique: true,
+})
 export class Calculator extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -1,4 +1,4 @@
-import { CalculatorDto, RmqService } from '@app/common';
+import { CalculatorDto, HistoryRequest, RmqService } from '@app/common';
 import { Controller } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { CalculatorService } from '../services/calculator.service';
@@ -18,11 +18,8 @@ export class CalculatorController {
   }
 
   @EventPattern('history')
-  async history(
-    @Payload() data: { email: string },
-    @Ctx() context: RmqContext,
-  ) {
-    const result = await this.calculatorService.history(data.email);
+  async history(@Payload() data: HistoryRequest, @Ctx() context: RmqContext) {
+    const result = await this.calculatorService.history(data);
     this.rmqService.ack(context);
     return result;
   }

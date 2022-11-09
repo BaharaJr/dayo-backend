@@ -2,6 +2,7 @@ import {
   CalculatorDto,
   CalculatorErrorResponse,
   CalculatorInterface,
+  HistoryRequest,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -21,9 +22,9 @@ export class CalculatorService {
       this.calculatorClient.send('calculate', { ...body }),
     );
   };
-  history = async (email: string) => {
+  history = async (data: HistoryRequest) => {
     return await lastValueFrom(
-      this.calculatorClient.send('history', { email }),
+      this.calculatorClient.send('history', { ...data }),
     );
   };
 

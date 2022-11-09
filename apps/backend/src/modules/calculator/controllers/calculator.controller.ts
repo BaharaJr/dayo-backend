@@ -3,6 +3,7 @@ import {
   CalculatorErrorResponse,
   CalculatorInterface,
   CalculatorSuccessResponse,
+  HistoryRequest,
 } from '@app/common';
 import {
   Body,
@@ -12,6 +13,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
   Res,
 } from '@nestjs/common';
@@ -46,8 +48,9 @@ export class CalculatorController {
   async history(
     @Req() req: any,
     @Res() res: any,
+    @Query() query: HistoryRequest,
   ): Promise<CalculatorInterface[] | CalculatorErrorResponse> {
-    const history = await this.service.history(req.user.email);
+    const history = await this.service.history(query);
     return res.status(history.status || HttpStatus.OK).send(history);
   }
 

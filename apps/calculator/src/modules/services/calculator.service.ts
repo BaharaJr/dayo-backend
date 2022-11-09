@@ -2,8 +2,10 @@ import {
   CalculatorDto,
   CalculatorErrorResponse,
   CalculatorSuccessResponse,
+  HistoryRequest,
+  HistoryResponse,
 } from '@app/common';
-import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Calculator } from '../entities/calculator.entity';
@@ -19,20 +21,48 @@ export class CalculatorService {
     data: CalculatorDto,
   ): Promise<Calculator | CalculatorErrorResponse> => {
     try {
-      const result = eval(
-        `${data.left} ${data.operator} ${Number(data.right)}`,
-      );
-      return await this.repository.save({ ...data, result });
+      return await this.getHistory(data);
     } catch (e) {
       return { status: HttpStatus.BAD_REQUEST, error: e.message };
     }
   };
 
-  history = async (
-    email: string,
-  ): Promise<Calculator[] | CalculatorErrorResponse> => {
+  getHistory = async (
+    data: CalculatorDto,
+  ): Promise<Calculator | CalculatorErrorResponse> => {
     try {
-      return await this.repository.find({ where: { email } });
+      const history = await this.repository.findOne({
+        where: {
+          email: data.email,
+          operator: data.operator,
+          left: data.left,
+          right: data.right,
+        },
+      });
+      return await this.saveCalculation(history, data);
+    } catch (e) {
+      return { status: HttpStatus.BAD_REQUEST, error: e.message };
+    }
+  };
+
+  saveCalculation = async (history: Calculator, data: CalculatorDto) => {
+    if (history) {
+      return history;
+    }
+    const result = eval(`${data.left} ${data.operator} ${Number(data.right)}`);
+    return await this.repository.save({ ...data, result });
+  };
+
+  history = async (
+    data: HistoryRequest,
+  ): Promise<HistoryResponse | CalculatorErrorResponse> => {
+    try {
+      const [history, total] = await this.repository.findAndCount({
+        where: { email: data.email },
+        take: data.pageSize,
+        skip: Number(data.pageSize) * Number(data.page),
+      });
+      return { total, history };
     } catch (e) {
       return { status: HttpStatus.BAD_REQUEST, error: e.message };
     }
@@ -43,18 +73,34 @@ export class CalculatorService {
     email: string,
   ): Promise<CalculatorSuccessResponse | CalculatorErrorResponse> => {
     try {
-      await this.validate(id, email);
-      await this.repository.delete(id);
-      return { message: 'History deleted successfully' };
+      return await this.validateAndDelete(id, email);
     } catch (e) {
       return { status: HttpStatus.BAD_REQUEST, error: e.message };
     }
   };
 
-  validate = async (id: string, email: string): Promise<void> => {
+  validateAndDelete = async (
+    id: string,
+    email: string,
+  ): Promise<CalculatorSuccessResponse | CalculatorErrorResponse> => {
     const calculation = await this.repository.findOne({ where: { id, email } });
     if (!calculation)
-      throw new BadRequestException('You do not have access to this resource');
-    return;
+      return {
+        error: 'You do not have access to this resource',
+        status: HttpStatus.BAD_REQUEST,
+      };
+
+    return this.deleteHistory(id);
+  };
+
+  deleteHistory = async (
+    id: string,
+  ): Promise<CalculatorSuccessResponse | CalculatorErrorResponse> => {
+    try {
+      await this.repository.delete(id);
+      return { message: 'History deleted successfully' };
+    } catch (e) {
+      return { status: HttpStatus.BAD_REQUEST, error: e.message };
+    }
   };
 }

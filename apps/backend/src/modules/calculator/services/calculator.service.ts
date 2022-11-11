@@ -2,12 +2,11 @@ import {
   CalculatorDto,
   CalculatorErrorResponse,
   CalculatorInterface,
-  HistoryRequest,
+  CALCULATOR_SERVICE,
   HistoryRequestDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CALCULATOR_SERVICE } from '@app/common';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
